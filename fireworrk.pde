@@ -1,13 +1,3 @@
-import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
-
-Minim minim = new Minim(this);
-AudioSnippet bgm;
-
 float CENTER_X;
 float CENTER_Y;
 int h_size = 15;
@@ -24,7 +14,6 @@ class Hanabi {
   int wait;
   Ball[][] hanabis;
   Ball[][] bls;
-  AudioSnippet player;
   
   Hanabi() {
     size = 0;
@@ -33,10 +22,7 @@ class Hanabi {
     time = 0;
     wait = 0;
     hanabis = new Ball[count][4];
-    
-    // hanabi sound effect load
-    player = minim.loadSnippet("hanabi2.mp3");
-    player.setGain(-10);
+
     for (int i = 0; i < count; i++) {
        for (int j = 0; j < 4; j++) {
          hanabis[i][j] = new Ball();
@@ -71,8 +57,7 @@ class Hanabi {
       break;
     case 5 : 
       col = 360; 
-      break;
-      
+      break;      
     }
     
     for (int i = 0; i < count; i++) {
@@ -178,7 +163,7 @@ class Ball {
 //all initialize
 void setup() {
   colorMode(HSB, 360, 100, 100, 100);
-  size(displayWidth, displayHeight);
+  fullScreen();
   
   //gradertion
   color c1 = color(240, 100, 10);
@@ -194,13 +179,9 @@ void setup() {
   CENTER_X = displayWidth/2;
   CENTER_Y = displayHeight/2;
   frameRate(16);
-  //bgm set
-  bgm = minim.loadSnippet("bgm.mp3");
-  bgm.setGain(-10);
-  bgm.loop();
-  
+
   //background set
-  bg = loadImage("bg.png");
+  //bg = loadImage("bg.png");
   //image(bg, 0, 0, displayWidth, displayHeight);
   for (int i = 0; i < hanabi.length; i++) hanabi[i] = new Hanabi();
 }
@@ -212,8 +193,6 @@ void uchiage(float mouse_x, float mouse_y, int wait) {
 
 void mousePressed() {
   hanabi[num].setup();
-  hanabi[num].player.rewind();
-  hanabi[num].player.play();
   if (num < hanabi.length-1) num++;
   else num = 0;
 }
@@ -240,5 +219,4 @@ void draw() {
 }
 
 void stop() {
-  minim.stop();
 }
